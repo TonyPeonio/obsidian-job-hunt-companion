@@ -110,40 +110,50 @@ export default class JobHuntCompanionPlugin extends Plugin {
 		const fields = mergePosting(regex, model);
 		const content = renderPostingNote({ ...fields, url: input.url, postingText: input.text, today: date });
 		const path = this.freePath(normalizePath(`${this.settings.jobsFolder}/${postingFileName(fields.company, fields.role)}`));
-		await writeNote(this.vault, path, content);
-		await this.app.workspace.openLinkText(path, "", false);
+		try {
+			await writeNote(this.vault, path, content);
+			await this.app.workspace.openLinkText(path, "", false);
+		} catch (err) {
+			new Notice(`Could not write the posting note ${path}: ${(err as Error).message}`, 10000);
+			return;
+		}
 		const found = [fields.deadline ? `deadline ${fields.deadline}` : "no deadline found", fields.salary ? `salary ${fields.salary}` : null, `${fields.requirements.length} requirements`].filter(Boolean).join(", ");
 		new Notice(`Added ${fields.company} — ${fields.role} (${found}).${modelNote}`, modelNote ? 10000 : 6000);
 	}
 
 	async changeStatus(file: TFile): Promise<void> {
-		const note = parsePostingNote(await this.app.vault.read(file));
-		if (!note) {
-			new Notice("This note is not a posting note (it needs company, role and status in its properties).");
-			return;
-		}
+		const note = await this.readPosting(file);
+		if (!note) return;
 		const modal = new StatusModal(this.app, note.status);
 		modal.open();
 		const status = await modal.result;
 		if (!status || status === note.status) return;
 		const date = today();
-		await this.app.vault.process(file, (content) => applyStatus(content, note.status, status, date, note.appliedOn));
-		new Notice(`${note.company} — ${note.role}: ${note.status} → ${status}.`);
+		try {
+			await this.app.vault.process(file, (content) => applyStatus(content, note.status, status, date, note.appliedOn));
+			new Notice(`${note.company} — ${note.role}: ${note.status} → ${status}.`);
+		} catch (err) {
+			new Notice(`Could not update ${file.path}: ${(err as Error).message}`, 10000);
+		}
 	}
 
 	async openBoard(): Promise<void> {
 		const date = today();
-		const jobs = await loadJobs(this.vault, this.settings.jobsFolder);
 		const path = normalizePath(`${this.settings.jobsFolder}/${BOARD_FILE}`);
-		await writeNote(this.vault, path, renderBoard(jobs, date));
-		let extra = "";
-		if (this.settings.exportIcs) {
-			const icsPath = normalizePath(this.settings.icsPath);
-			await writeNote(this.vault, icsPath, renderIcs(jobs, date, new Date()));
-			extra = ` Deadlines exported to ${icsPath}.`;
+		try {
+			const jobs = await loadJobs(this.vault, this.settings.jobsFolder);
+			await writeNote(this.vault, path, renderBoard(jobs, date));
+			let extra = "";
+			if (this.settings.exportIcs) {
+				const icsPath = normalizePath(this.settings.icsPath);
+				await writeNote(this.vault, icsPath, renderIcs(jobs, date, new Date()));
+				extra = ` Deadlines exported to ${icsPath}.`;
+			}
+			await this.app.workspace.openLinkText(path, "", false);
+			new Notice(`Board refreshed from ${jobs.length} posting${jobs.length === 1 ? "" : "s"}.${extra}`);
+		} catch (err) {
+			new Notice(`Could not refresh the board: ${(err as Error).message}`, 10000);
 		}
-		await this.app.workspace.openLinkText(path, "", false);
-		new Notice(`Board refreshed from ${jobs.length} posting${jobs.length === 1 ? "" : "s"}.${extra}`);
 	}
 
 	async tailor(file: TFile): Promise<void> {
@@ -227,7 +237,14 @@ export default class JobHuntCompanionPlugin extends Plugin {
 	// ---------------------------------------------------------------- helpers
 
 	private async readPosting(file: TFile): Promise<PostingNote | null> {
-		const note = parsePostingNote(await this.app.vault.read(file));
+		let content: string;
+		try {
+			content = await this.app.vault.read(file);
+		} catch (err) {
+			new Notice(`Could not read ${file.path}: ${(err as Error).message}`, 8000);
+			return null;
+		}
+		const note = parsePostingNote(content);
 		if (!note) new Notice("This note is not a posting note (it needs company, role and status in its properties).");
 		return note;
 	}

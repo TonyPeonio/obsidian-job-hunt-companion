@@ -36,9 +36,13 @@ export class StatusModal extends SuggestModal<Status> {
 
 	onClose(): void {
 		super.onClose();
-		if (!this.done) {
-			this.done = true;
-			this.resolve(null);
-		}
+		// Obsidian closes the modal before calling onChooseSuggestion, so the null result for a
+		// dismissed modal is deferred one tick; a choice made in between wins.
+		window.setTimeout(() => {
+			if (!this.done) {
+				this.done = true;
+				this.resolve(null);
+			}
+		}, 0);
 	}
 }
