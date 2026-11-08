@@ -1,0 +1,10 @@
+{
+	"id": "job-hunt-companion",
+	"name": "Job Hunt Companion",
+	"version": "0.1.0",
+	"minAppVersion": "1.7.2",
+	"description": "Track job applications as notes: paste a posting, get a structured note and a board; a local model tailors your resume bullets and drafts interview questions.",
+	"author": "Tony Peonio",
+	"authorUrl": "https://github.com/TonyPeonio",
+	"isDesktopOnly": false
+}

@@ -1,0 +1,31 @@
+/* Job Hunt Companion */
+
+.jhc-modal .jhc-modal-help {
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	margin: 0 0 var(--size-4-3);
+}
+
+.jhc-modal .jhc-modal-error {
+	color: var(--text-error);
+	font-size: var(--font-ui-small);
+	margin: var(--size-4-2) 0 0;
+}
+
+.jhc-modal .jhc-modal-wide {
+	width: 100%;
+}
+
+.jhc-modal .jhc-modal-textarea {
+	width: 100%;
+	min-height: 16em;
+	font-family: var(--font-text);
+	font-size: var(--font-ui-small);
+	resize: vertical;
+}
+
+.jhc-status-hint {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	margin-left: var(--size-4-2);
+}
