@@ -166,9 +166,18 @@ board, ICS, tailoring, interview prep, Ollama client) has no Obsidian dependency
 against an in-memory vault; `src/main.ts`, the modals and the settings tab are the thin Obsidian
 layer.
 
-Part of a small suite of local-first companions for students at
-[github.com/TonyPeonio](https://github.com/TonyPeonio): Local Vault Agent, Lecture Companion,
-Canvas Companion, Exam Companion, Paper Companion, Research Log Companion and Meeting Companion.
+Job Hunt Companion is part of the Companion suite of local-first Obsidian plugins by Tony Peonio for
+students and researchers: your machine does the work, every change is a diff you approve, and the
+numbers are published. The others are Local Vault Agent (local Ollama agent that searches, compiles,
+edits notes), Lecture Companion (live local lecture transcription, Canvas slides, Ollama summaries),
+Canvas Companion (Canvas LMS assignments, grades and announcements as notes), Exam Companion
+(day-by-day study plan, daily quizzes and flashcards), Paper Companion (Zotero search by meaning,
+page-cited reading notes), Research Log Companion (append-only lab notebook with git, parameters,
+data hashes), Meeting Companion (local meeting transcription, decisions, action items, weekly
+digest), Fellowship Companion (grants and fellowships: deadlines, materials, letters, eligibility),
+Code Companion (commits in the daily note, weekly report, TODOs), Teaching Companion (local-model
+rubric grading with verbatim evidence) and Branching Table of Contents (parent/child properties as a
+rooted family tree). All at [github.com/TonyPeonio](https://github.com/TonyPeonio).
 
 ## License
 
