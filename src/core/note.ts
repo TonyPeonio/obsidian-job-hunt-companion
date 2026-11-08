@@ -82,7 +82,7 @@ export function renderPostingNote(p: PostingNoteInput): string {
 		"",
 		"## Fit",
 		"",
-		p.requirements.length ? p.requirements.map((r) => `- [ ] ${r}`).join("\n") : "_Tick the requirements you meet once the list above is filled in._",
+		p.requirements.length ? p.requirements.map((r) => `- ${r}`).join("\n") : "_Note how you meet each requirement once the list above is filled in._",
 		"",
 		"## Notes",
 		"",

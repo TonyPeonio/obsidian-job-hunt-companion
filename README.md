@@ -9,8 +9,8 @@ requirement and draft likely interview questions. Everything runs on your machin
 to a job board, a vendor or anyone else.
 
 - **A note per application, in your vault.** `Jobs/<Company> - <Role>.md` with properties you can
-  query with Dataview or Bases, the posting text as pasted, the requirements as a checklist to
-  tick off, your notes, and a timeline of every status change.
+  query with Dataview or Bases, the posting text as pasted, the requirements as a plain list (no
+  checkboxes, so nothing lands in your task queries), your notes, and a timeline of every status change.
 - **Deterministic first, model second.** Dates (six common formats), salary ranges, location,
   remote/hybrid/on-site and contact emails are read with regular expressions and win over anything
   the model says. The model only fills what the regexes cannot: company, role, requirements,
@@ -92,7 +92,7 @@ keywords:
 
 ## Nice to have
 ## Fit
-- [ ] 2+ years writing production Python
+- 2+ years writing production Python
 ## Notes
 ## Timeline
 - 2026-11-07 — added

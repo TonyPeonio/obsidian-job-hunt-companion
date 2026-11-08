@@ -40,7 +40,8 @@ describe("posting note rendering", () => {
 		expect(note).toContain("keywords:\n  - python\n  - airflow\n  - \"sql: advanced\"\n");
 		for (const h of ["## Posting", "## Requirements", "## Nice to have", "## Fit", "## Notes", "## Timeline"]) expect(note).toContain(`\n${h}\n`);
 		expect(note).toContain("```text\n" + SAMPLE_POSTING.trimEnd() + "\n```");
-		expect(note).toContain("- [ ] 2+ years writing production Python");
+		expect(note).toContain("## Fit\n\n- 2+ years writing production Python");
+		expect(note).not.toMatch(/- \[[ x]\]/);
 		expect(note).toContain("- 2026-11-07 — added");
 		expect(note).toContain("Contact: hiring@acme-analytics.example");
 	});
